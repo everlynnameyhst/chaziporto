@@ -24,13 +24,19 @@ export default function AboutPage() {
             transition={{ duration: 0.5 }}
             className="space-y-12"
           >
-            <div className="flex flex-col items-center text-center space-y-6">
-              <CircularLogo size={120} className="shadow-2xl shadow-primary/30 ring-4 ring-primary/20 p-1" />
-              <div className="space-y-4">
-                <div className="flex items-center justify-center gap-3">
-                  <Award className="w-8 h-8 text-primary" />
-                  <h1 className="text-5xl md:text-6xl font-bold text-gradient">About Me</h1>
-                </div>
+             <div className="circle-clip w-full h-full relative overflow-hidden border-4 border-primary/30 bg-background shadow-2xl shadow-primary/20">
+                <motion.img
+                  src="https://files.catbox.moe/u13f8n.png"
+                  alt="Lexxy Mpx Profile"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-background/60 via-transparent to-transparent" />
+              </div>
+
+              <div className="absolute inset-0 circle-clip bg-primary/10 blur-2xl -z-10 scale-105" />
+            </motion.div>
+          </motion.div>
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
                   I'm Lexxy Mpx, a passionate Full-Stack Developer and Creative Technologist with a love for building
                   beautiful digital experiences.
