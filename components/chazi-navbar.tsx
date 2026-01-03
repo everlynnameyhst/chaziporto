@@ -27,7 +27,6 @@ export function Navbar() {
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  // Variasi animasi untuk Container Sidebar
   const sidebarVariants = {
     closed: { 
       x: "100%",
@@ -38,13 +37,12 @@ export function Navbar() {
       transition: { 
         duration: 0.4, 
         ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.05, // Membuat item menu muncul satu-satu
+        staggerChildren: 0.05, 
         delayChildren: 0.1
       } 
     }
   }
 
-  // Variasi animasi untuk Item di dalam Menu
   const itemVariants = {
     closed: { opacity: 0, x: 20 },
     opened: { opacity: 1, x: 0 }
@@ -97,7 +95,6 @@ export function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop dengan performa lebih ringan */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
