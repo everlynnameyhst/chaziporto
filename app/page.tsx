@@ -20,8 +20,6 @@ export default function Home() {
         <FAQ />
       </main>
       <Footer />
-
-      {/* Ambient background decorations */}
       <div className="fixed top-0 left-0 w-full h-full -z-50 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse" />
         <div
