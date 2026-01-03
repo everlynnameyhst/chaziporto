@@ -7,8 +7,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Palette, Smartphone, Layout, Server, Terminal, Sparkles } from "lucide-react"
+import { Palette, Smartphone, Layout, Server, Terminal, Sparkles, Binary } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { CircularLogo } from "@/components/chazi-logo"
 
 const skills = [
   {
@@ -64,12 +65,18 @@ export function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="flex flex-col items-center text-center mb-16 space-y-6"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Skills & Expertise</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-            Technologies and tools I use to bring ideas to life
-          </p>
+          <CircularLogo size={90} className="shadow-lg shadow-primary/10" />
+          <div className="space-y-4">
+            <div className="flex items-center justify-center gap-3">
+              <Binary className="w-8 h-8 text-primary" />
+              <h2 className="text-4xl md:text-5xl font-bold text-gradient">Skills & Expertise</h2>
+            </div>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
+              Technologies and tools I use to bring ideas to life
+            </p>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
