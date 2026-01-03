@@ -22,8 +22,7 @@ export function WhatsAppBotCode() {
   return (
     <div className="w-full max-w-full px-2 py-4 select-none">
       <div className="mx-auto max-w-full sm:max-w-2xl bg-black rounded-xl overflow-hidden border border-white/20 shadow-[0_0_30px_rgba(0,0,0,0.5)] flex flex-col">
-        
-        {/* Header Terminal */}
+       
         <div className="bg-[#0f0f0f] p-3 border-b border-white/10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center justify-between sm:justify-start gap-4">
             <div className="flex gap-1.5">
@@ -58,7 +57,6 @@ export function WhatsAppBotCode() {
           </button>
         </div>
 
-        {/* Area Kode - Anti Hancur Mobile */}
         <div className="w-full overflow-x-auto bg-black scrollbar-hide">
           <div className="p-4 sm:p-6 min-w-full inline-block">
             <pre className="font-mono text-[11px] sm:text-[13px] leading-relaxed text-gray-300 whitespace-pre">
@@ -110,7 +108,7 @@ export function WhatsAppBotCode() {
           </div>
         </div>
 
-        {/* Footer */}
+
         <div className="bg-[#0a0a0a] px-4 py-2 border-t border-white/5 flex items-center gap-2">
           <Terminal className="w-3 h-3 text-gray-700" />
           <span className="text-[10px] text-gray-700 font-mono tracking-widest uppercase">
