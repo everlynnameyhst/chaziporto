@@ -46,7 +46,6 @@ export default function AboutPage() {
             animate="visible"
             className="space-y-12"
           >
-            {/* Bagian Profil yang diubah stylenya */}
             <div className="flex flex-col items-center text-center space-y-6">
               <motion.div variants={itemVariants} className="relative flex items-center justify-center">
                 <motion.div
@@ -60,10 +59,9 @@ export default function AboutPage() {
                   }}
                   className="relative w-32 h-32 md:w-40 md:h-40"
                 >
-                  {/* Container Image dengan efek circle-clip & border yang sama dengan Hero */}
                   <div className="circle-clip w-full h-full relative overflow-hidden border-4 border-primary/30 bg-background shadow-2xl shadow-primary/20">
                     <motion.img
-                      src="https://files.catbox.moe/u13f8n.png" // Menggunakan source image yang sama
+                      src="https://files.catbox.moe/u13f8n.png" // ganti url lu ya (＾ｖ＾)
                       alt="Lexxy Mpx Profile"
                       className="w-full h-full object-cover"
                       loading="eager"
@@ -71,7 +69,6 @@ export default function AboutPage() {
                     <div className="absolute inset-0 bg-linear-to-t from-background/60 via-transparent to-transparent" />
                   </div>
 
-                  {/* Efek Glow di belakang gambar */}
                   <div className="absolute inset-0 circle-clip bg-primary/10 blur-2xl -z-10 scale-105" />
                 </motion.div>
               </motion.div>
@@ -88,7 +85,6 @@ export default function AboutPage() {
               </motion.div>
             </div>
 
-            {/* Bagian Journey */}
             <motion.div variants={itemVariants} className="glass rounded-[2.5rem] p-8 md:p-12 space-y-6 relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Rocket className="w-32 h-32 text-primary" />
@@ -104,7 +100,6 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            {/* Grid Skills/Approach */}
             <div className="grid md:grid-cols-2 gap-6">
               <motion.div variants={itemVariants} className="glass rounded-[2rem] p-6 space-y-4">
                 <div className="flex items-center gap-3">
