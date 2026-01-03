@@ -24,7 +24,6 @@ import { CircularLogo } from "@/components/chazi-logo"
  */
 
 export function Footer() {
-  // Social links hanya GitHub, WhatsApp, dan LinkedIn
   const socialLinks = [
     {
       icon: Github,
