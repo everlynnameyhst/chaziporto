@@ -34,7 +34,7 @@ function ShopContent() {
   const [showCurrencySelector, setShowCurrencySelector] = useState(false)
   const [coupon, setCoupon] = useState("")
   const [isCouponApplied, setIsCouponApplied] = useState(false)
-  const [currency, setCurrency] = useState(currencies[0]) // Declare currency and setCurrency
+  const [currency, setCurrency] = useState(currencies[0])
   const [isValidating, setIsValidating] = useState(false)
   const [discount, setDiscount] = useState(0)
 
@@ -117,8 +117,6 @@ function ShopContent() {
   return (
     <div className="relative min-h-screen bg-background">
       <Navbar />
-
-      {/* Using shared CurrencyModal */}
       <CurrencyModal
         isOpen={showCurrencySelector}
         onClose={() => setShowCurrencySelector(false)}
