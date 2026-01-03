@@ -9,7 +9,7 @@ const projects = [
   {
     title: "E-Commerce Platform",
     description: "Full-stack e-commerce solution with Next.js, Stripe, and PostgreSQL",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "urliimageproject",
     tags: ["Next.js", "TypeScript", "Stripe"],
     github: "#",
     demo: "#",
@@ -27,7 +27,7 @@ const projects = [
   {
     title: "Portfolio CMS",
     description: "Headless CMS for managing portfolio content",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "urliimageproject",
     tags: ["Sanity", "Next.js", "Tailwind"],
     github: "#",
     demo: "#",
@@ -36,7 +36,7 @@ const projects = [
   {
     title: "Weather Dashboard",
     description: "Beautiful weather app with real-time data",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "urliimageproject",
     tags: ["React", "API", "Charts"],
     github: "#",
     demo: "#",
@@ -45,7 +45,7 @@ const projects = [
   {
     title: "Task Manager",
     description: "Collaborative task management tool",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "urliimageproject",
     tags: ["Vue", "Firebase", "Vuex"],
     github: "#",
     demo: "#",
