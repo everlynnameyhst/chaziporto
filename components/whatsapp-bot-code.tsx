@@ -6,19 +6,14 @@
 "use client"
 
 import { useState } from "react"
-import { Check, Copy, MessageSquare, ChevronDown, ChevronUp, Terminal } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Check, Copy, Terminal, Circle, ChevronRight } from "lucide-react"
 
 export function WhatsAppBotCode() {
-  const [copiedSection, setCopiedSection] = useState<string | null>(null)
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [type, setType] = useState<'esm' | 'cjs' | 'case'>('esm')
+  const [copied, setCopied] = useState(false)
 
-  const codeSections = [
-    {
-      id: "esm",
-      title: "ESM Module Plugin",
-      description: "Plugin untuk bot dengan sistem module ES6",
-      code: `import { addCoupon } from './lib/db.js'
+  const codes = {
+    esm: `import { addCoupon } from './lib/db.js'
 
 export default {
   name: 'addcoupon',
@@ -31,13 +26,8 @@ export default {
     await addCoupon(code, discount)
     chazireply(\`Kupon \${code} berhasil ditambahkan dengan diskon \${discount}%\`)
   }
-}`
-    },
-    {
-      id: "cjs",
-      title: "CommonJS Plugin",
-      description: "Plugin untuk bot dengan sistem module CommonJS",
-      code: `const { addCoupon } = require('./lib/db')
+}`,
+    cjs: `const { addCoupon } = require('./lib/db')
 
 module.exports = {
   name: 'addcoupon',
@@ -50,13 +40,8 @@ module.exports = {
     await addCoupon(code, discount)
     chazireply(\`Kupon \${code} berhasil ditambahkan dengan diskon \${discount}%\`)
   }
-}`
-    },
-    {
-      id: "case",
-      title: "Case/Break Handler",
-      description: "Handler untuk sistem case/break pada bot WhatsApp",
-      code: `case 'addcoupon': {
+}`,
+    case: `case 'addcoupon': {
   if (!isOwner) return chazireply('Fitur ini khusus Owner!')
   if (!q.includes('|')) return chazireply('Format: .addcoupon KODE|DISKON')
   let [code, discount] = q.split('|')
@@ -69,162 +54,129 @@ module.exports = {
   chazireply(\`Kupon \${code} berhasil dibuat!\`)
 }
 break`
-    }
-  ]
-
-  const handleCopy = (id: string, text: string) => {
-    navigator.clipboard.writeText(text)
-    setCopiedSection(id)
-    
-    const button = document.getElementById(`copy-btn-${id}`)
-    if (button) {
-      button.classList.add("animate-pulse")
-      setTimeout(() => {
-        button.classList.remove("animate-pulse")
-      }, 500)
-    }
-    
-    setTimeout(() => setCopiedSection(null), 2000)
   }
 
-  const getSyntaxHighlight = (code: string) => {
-    const replacements = [
-      { pattern: /(import|export|default|from|async|await)/g, color: "text-blue-400" },
-      { pattern: /(const|let|var|new|Date|parseInt|toUpperCase)/g, color: "text-purple-400" },
-      { pattern: /(if|return|case|break|split|includes)/g, color: "text-pink-400" },
-      { pattern: /(true|false|null)/g, color: "text-yellow-400" },
-      { pattern: /(addCoupon|chazireply|db\.collection|insertOne|module\.exports|require)/g, color: "text-green-400" },
-      { pattern: /('[^']*'|`[^`]*`)/g, color: "text-yellow-300" },
-      { pattern: /(\d+)/g, color: "text-orange-400" },
-      { pattern: /(\{|\(|\[)/g, color: "text-white" },
-      { pattern: /(\}|\)|\])/g, color: "text-white" },
-    ]
-
-    let highlighted = code
-    replacements.forEach(({ pattern, color }) => {
-      highlighted = highlighted.replace(pattern, `<span class="${color}">$1</span>`)
-    })
-
-    return highlighted
-  }
-
-  const toggleDropdown = (id: string) => {
-    setOpenDropdown(openDropdown === id ? null : id)
+  const handleCopy = () => {
+    navigator.clipboard.writeText(codes[type])
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-16 p-6 bg-gray-900 border border-gray-800 rounded-xl font-mono shadow-2xl">
-      {/* Terminal Header */}
-      <div className="flex items-center justify-between mb-6 p-3 bg-gray-800 rounded-lg">
-        <div className="flex items-center gap-3">
-          <Terminal className="w-5 h-5 text-green-400" />
-          <div>
-            <h2 className="text-lg font-bold text-white">WhatsApp Bot Integration</h2>
-            <p className="text-xs text-gray-400">Pilih dan copy kode plugin untuk bot Anda</p>
+    <div className="w-full max-w-4xl mx-auto p-4 md:p-8">
+      <div className="bg-[#0d0d0d] rounded-2xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        
+        <div className="bg-[#1a1a1a] px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-white/5">
+          <div className="flex items-center gap-6">
+            <div className="hidden sm:flex gap-1.5">
+              <Circle className="w-3 h-3 fill-[#ff5f56] text-transparent" />
+              <Circle className="w-3 h-3 fill-[#ffbd2e] text-transparent" />
+              <Circle className="w-3 h-3 fill-[#27c93f] text-transparent" />
+            </div>
+            <div className="flex bg-black/40 p-1 rounded-lg border border-white/5">
+              {(['esm', 'cjs', 'case'] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setType(t)}
+                  className={`px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all ${
+                    type === t ? "bg-blue-600 text-white shadow-lg" : "text-gray-500 hover:text-gray-300"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flex gap-1">
-          <div className="w-2 h-2 rounded-full bg-red-500"></div>
-          <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-          <div className="w-2 h-2 rounded-full bg-green-500"></div>
-        </div>
-      </div>
 
-      <div className="space-y-4">
-        {codeSections.map((section) => (
-          <div key={section.id} className="border border-gray-700 rounded-lg overflow-hidden">
-            {/* Dropdown Trigger */}
-            <button
-              onClick={() => toggleDropdown(section.id)}
-              className="w-full p-4 bg-gray-800 hover:bg-gray-750 flex items-center justify-between transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-full ${openDropdown === section.id ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-                <div className="text-left">
-                  <h3 className="font-bold text-white">{section.title}</h3>
-                  <p className="text-sm text-gray-400">{section.description}</p>
-                </div>
-              </div>
-              {openDropdown === section.id ? (
-                <ChevronUp className="w-5 h-5 text-gray-400" />
-              ) : (
-                <ChevronDown className="w-5 h-5 text-gray-400" />
-              )}
-            </button>
-
-            {/* Code Content */}
-            {openDropdown === section.id && (
-              <div className="border-t border-gray-700">
-                <div className="p-4 bg-black/50">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <div className="w-3 h-3 rounded-full bg-gray-700"></div>
-                      <span>index.js</span>
-                    </div>
-                    <Button
-                      id={`copy-btn-${section.id}`}
-                      onClick={() => handleCopy(section.id, section.code)}
-                      className={`h-8 px-4 transition-all duration-300 ${
-                        copiedSection === section.id 
-                          ? 'bg-green-700 text-white' 
-                          : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                      } border border-gray-600 rounded`}
-                    >
-                      <div className="flex items-center gap-2">
-                        {copiedSection === section.id ? (
-                          <>
-                            <Check className="w-4 h-4 animate-bounce" />
-                            <span className="font-medium">Copied!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-4 h-4" />
-                            <span className="font-medium">Copy Code</span>
-                          </>
-                        )}
-                      </div>
-                    </Button>
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-purple-500"></div>
-                    <pre className="pl-4 pr-2 py-3 bg-black/90 text-gray-300 text-sm overflow-x-auto rounded">
-                      <code 
-                        dangerouslySetInnerHTML={{ 
-                          __html: getSyntaxHighlight(section.code) 
-                        }}
-                        className="block whitespace-pre font-mono"
-                      />
-                    </pre>
-                  </div>
-                </div>
-              </div>
+          <button
+            onClick={handleCopy}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 active:scale-90 ${
+              copied ? "bg-green-500 text-white" : "bg-white/10 hover:bg-white/20 text-white"
+            }`}
+          >
+            {copied ? (
+              <Check className="w-4 h-4 animate-bounce" />
+            ) : (
+              <Copy className="w-4 h-4" />
             )}
-          </div>
-        ))}
-      </div>
+            <span className="text-xs font-bold uppercase">{copied ? "Copied!" : "Copy Code"}</span>
+          </button>
+        </div>
 
-      {/* Terminal Footer */}
-      <div className="mt-8 pt-4 border-t border-gray-800">
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500">$</span>
-            <span className="text-green-400">npm install whatsapp-web.js</span>
+        <div className="relative group">
+          <div className="absolute left-0 top-0 bottom-0 w-12 bg-black/20 border-r border-white/5 flex flex-col items-center pt-6 text-[10px] text-gray-600 font-mono select-none">
+            {Array.from({ length: 15 }).map((_, i) => (
+              <span key={i} className="leading-[22.4px]">{i + 1}</span>
+            ))}
           </div>
-          <div className="text-gray-500 text-xs">
-            <span className="text-gray-400">Bot Framework:</span> Baileys
+          
+          <div className="pl-16 p-6 overflow-x-auto">
+            <pre className="font-mono text-[13px] leading-relaxed whitespace-pre">
+              {type === 'esm' && (
+                <code className="text-gray-300">
+                  <span className="text-pink-500">import</span> {"{ "} <span className="text-blue-400">addCoupon</span> {"} "} <span className="text-pink-500">from</span> <span className="text-yellow-200">'./lib/db.js'</span>{"\n\n"}
+                  <span className="text-pink-500">export default</span> {"{"}{"\n"}
+                  {"  "}name: <span className="text-yellow-200">'addcoupon'</span>,{"\n"}
+                  {"  "}category: <span className="text-yellow-200">'admin'</span>,{"\n"}
+                  {"  "}desc: <span className="text-yellow-200">'Menambahkan kupon diskon baru'</span>,{"\n"}
+                  {"  "}<span className="text-pink-500">async</span> <span className="text-blue-400">exec</span>({"{ sock, m, args }"}) {"{"}{"\n"}
+                  {"    "}<span className="text-pink-500">if</span> (!args[<span className="text-orange-400">0</span>] || !args[<span className="text-orange-400">1</span>]) <span className="text-pink-500">return</span> <span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">'Format: .addcoupon inputkode inputpersen'</span>){"\n"}
+                  {"    "}<span className="text-pink-500">const</span> code = args[<span className="text-orange-400">0</span>].<span className="text-blue-400">toUpperCase</span>(){"\n"}
+                  {"    "}<span className="text-pink-500">const</span> discount = <span className="text-blue-400">parseInt</span>(args[<span className="text-orange-400">1</span>]){"\n"}
+                  {"    "}<span className="text-pink-500">await</span> <span className="text-blue-400">addCoupon</span>(code, discount){"\n"}
+                  {"    "}<span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">`Kupon </span><span className="text-orange-400">{"\${code}"}</span><span className="text-yellow-200"> berhasil ditambahkan dengan diskon </span><span className="text-orange-400">{"\${discount}"}</span><span className="text-yellow-200">%`</span>){"\n"}
+                  {"  "}{"}"}{"\n"}
+                  {"}"}
+                </code>
+              )}
+              {type === 'cjs' && (
+                <code className="text-gray-300">
+                  <span className="text-pink-500">const</span> {"{ "} <span className="text-blue-400">addCoupon</span> {"} = "} <span className="text-blue-400">require</span>(<span className="text-yellow-200">'./lib/db'</span>){"\n\n"}
+                  <span className="text-blue-400">module.exports</span> = {"{"}{"\n"}
+                  {"  "}name: <span className="text-yellow-200">'addcoupon'</span>,{"\n"}
+                  {"  "}category: <span className="text-yellow-200">'admin'</span>,{"\n"}
+                  {"  "}desc: <span className="text-yellow-200">'Menambahkan kupon diskon baru'</span>,{"\n"}
+                  {"  "}<span className="text-pink-500">async</span> <span className="text-blue-400">exec</span>({"{ sock, m, args }"}) {"{"}{"\n"}
+                  {"    "}<span className="text-pink-500">if</span> (!args[<span className="text-orange-400">0</span>] || !args[<span className="text-orange-400">1</span>]) <span className="text-pink-500">return</span> <span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">'Format: .addcoupon inputkode inputpersen'</span>){"\n"}
+                  {"    "}<span className="text-pink-500">const</span> code = args[<span className="text-orange-400">0</span>].<span className="text-blue-400">toUpperCase</span>(){"\n"}
+                  {"    "}<span className="text-pink-500">const</span> discount = <span className="text-blue-400">parseInt</span>(args[<span className="text-orange-400">1</span>]){"\n"}
+                  {"    "}<span className="text-pink-500">await</span> <span className="text-blue-400">addCoupon</span>(code, discount){"\n"}
+                  {"    "}<span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">`Kupon </span><span className="text-orange-400">{"\${code}"}</span><span className="text-yellow-200"> berhasil ditambahkan dengan diskon </span><span className="text-orange-400">{"\${discount}"}</span><span className="text-yellow-200">%`</span>){"\n"}
+                  {"  "}{"}"}{"\n"}
+                  {"}"}
+                </code>
+              )}
+              {type === 'case' && (
+                <code className="text-gray-300">
+                  <span className="text-pink-500">case</span> <span className="text-yellow-200">'addcoupon'</span>: {"{"}{"\n"}
+                  {"  "}<span className="text-pink-500">if</span> (!isOwner) <span className="text-pink-500">return</span> <span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">'Fitur ini khusus Owner!'</span>){"\n"}
+                  {"  "}<span className="text-pink-500">if</span> (!q.<span className="text-blue-400">includes</span>(<span className="text-yellow-200">'|'</span>)) <span className="text-pink-500">return</span> <span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">'Format: .addcoupon KODE|DISKON'</span>){"\n"}
+                  {"  "}<span className="text-pink-500">let</span> [code, discount] = q.<span className="text-blue-400">split</span>(<span className="text-yellow-200">'|'</span>){"\n"}
+                  {"  "}<span className="text-pink-500">await</span> db.<span className="text-blue-400">collection</span>(<span className="text-yellow-200">'coupons'</span>).<span className="text-blue-400">insertOne</span>({"{"}{"\n"}
+                  {"    "}code: code.<span className="text-blue-400">toUpperCase</span>(),{"\n"}
+                  {"    "}discount: <span className="text-blue-400">parseInt</span>(discount),{"\n"}
+                  {"    "}active: <span className="text-orange-400">true</span>,{"\n"}
+                  {"    "}expiryDate: <span className="text-pink-500">new</span> <span className="text-blue-400">Date</span>(<span className="text-blue-400">Date</span>.<span className="text-blue-400">now</span>() + <span className="text-orange-400">30</span> * <span className="text-orange-400">24</span> * <span className="text-orange-400">60</span> * <span className="text-orange-400">60</span> * <span className="text-orange-400">1000</span>){"\n"}
+                  {"  "}{"}"}){"\n"}
+                  {"  "}<span className="text-blue-400">chazireply</span>(<span className="text-yellow-200">`Kupon </span><span className="text-orange-400">{"\${code}"}</span><span className="text-yellow-200"> berhasil dibuat!`</span>){"\n"}
+                  {"}"}{"\n"}
+                  <span className="text-pink-500">break</span>
+                </code>
+              )}
+            </pre>
           </div>
         </div>
-      </div>
 
-      {/* Status Indicator */}
-      <div className="mt-4 flex items-center justify-end gap-4">
-        <div className="flex items-center gap-2">
-          <div className={`w-2 h-2 rounded-full ${copiedSection ? 'animate-ping bg-green-500' : 'bg-gray-600'}`}></div>
-          <span className="text-xs text-gray-400">
-            {copiedSection ? 'Kode berhasil dicopy!' : 'Ready to copy'}
-          </span>
+        <div className="bg-[#1a1a1a] px-6 py-3 flex items-center justify-between border-t border-white/5">
+          <div className="flex items-center gap-4 text-[11px] font-mono text-gray-500">
+            <span className="flex items-center gap-1"><ChevronRight className="w-3 h-3"/> UTF-8</span>
+            <span className="flex items-center gap-1"><ChevronRight className="w-3 h-3"/> JavaScript</span>
+          </div>
+          <div className="text-[10px] text-gray-600 font-bold tracking-widest uppercase">
+            Chazi Mpx Terminal v1.0
+          </div>
         </div>
+
       </div>
     </div>
   )
