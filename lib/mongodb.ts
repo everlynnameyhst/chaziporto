@@ -1,7 +1,13 @@
+/**
+ * Create By Chazi ` Mpx.
+ * Contact Me on wa.me/14314403688
+ * Follow https://github.com/everlynnameyhst
+ */
+
 import { MongoClient } from "mongodb"
 
 const MONGO_URI =
-  "mongodb+srv://fluxxzyofficial_db_user:o1SekIQ7eZbVHHpv@swezesty.lbdr9bs.mongodb.net/swezesty-db?retryWrites=true&w=majority&appName=swezesty"
+  "gantiurllu"
 const options = {}
 
 let client: MongoClient
